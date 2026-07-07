@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PS Role — Simulation Day Cheat Sheet</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #EBEAE1;
+    color: #3A3A38;
+    padding: 24px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .header {
+    background: #3A3A38;
+    color: #EBEAE1;
+    padding: 20px 24px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header h1 { font-size: 20px; font-weight: 700; }
+  .header .sub { font-size: 13px; color: #8EBEB1; margin-top: 4px; }
+  .header .badge {
+    background: #04888A;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .card {
+    background: white;
+    border-radius: 8px;
+    padding: 18px;
+    border-left: 4px solid #04888A;
+  }
+  .card.orange { border-left-color: #F37944; }
+  .card.purple { border-left-color: #816AAE; }
+  .card.green { border-left-color: #72AD6C; }
+  .card.dark { background: #3A3A38; color: #EBEAE1; border-left-color: #C9DC50; }
+  .card.full { grid-column: 1 / -1; }
+  .card h2 {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #04888A;
+    margin-bottom: 12px;
+  }
+  .card.orange h2 { color: #F37944; }
+  .card.purple h2 { color: #816AAE; }
+  .card.green h2 { color: #72AD6C; }
+  .card.dark h2 { color: #C9DC50; }
+  .step {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+  .step-num {
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #04888A;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+  .card.orange .step-num { background: #F37944; }
+  .card.purple .step-num { background: #816AAE; }
+  .card.green .step-num { background: #72AD6C; }
+  .step-content strong { display: block; font-size: 13px; margin-bottom: 2px; }
+  .step-content .line { font-size: 12px; color: #5a5a58; font-style: italic; background: #f5f5f0; padding: 4px 8px; border-radius: 4px; margin-top: 4px; }
+  .card.dark .step-content .line { background: #4a4a48; color: #EBEAE1; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #EBEAE1; text-align: left; padding: 7px 10px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #3A3A38; }
+  td { padding: 7px 10px; border-bottom: 1px solid #EBEAE1; vertical-align: top; }
+  td:first-child { font-weight: 600; width: 35%; }
+  .confirm { color: #04888A; font-weight: 700; }
+  .alert-box {
+    background: #FFF8F0;
+    border: 2px solid #F37944;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 20px;
+  }
+  .alert-box h2 { color: #F37944; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .alert-box p { font-size: 13px; }
+  .tag {
+    display: inline-block;
+    background: #04888A;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 10px;
+    margin-right: 4px;
+    text-transform: uppercase;
+  }
+  .tag.am { background: #816AAE; }
+  .tag.both { background: #72AD6C; }
+  .phase {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    align-items: flex-start;
+  }
+  .phase-label {
+    min-width: 64px;
+    background: #3A3A38;
+    color: #C9DC50;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 4px;
+    text-align: center;
+    margin-top: 1px;
+  }
+  .phase-detail { font-size: 13px; }
+  .phase-detail span { color: #04888A; font-weight: 600; }
+  .footer { text-align: center; font-size: 11px; color: #888; margin-top: 20px; }
+  .divider { height: 1px; background: #EBEAE1; margin: 10px 0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>PS Role — Simulation Day Cheat Sheet</h1>
+    <div class="sub">Parkway Outdoors · Deployment Scoping Call · 15 minutes · July 7, 2026</div>
+  </div>
+  <div class="badge">Stage 1 → 2</div>
+</div>
+
+<div class="alert-box">
+  <h2>⚡ Your Job in 3 Lines</h2>
+  <p><strong>Lead:</strong> Confirm scope (sites + licenses) and the phased go-live plan with Mary Chen.<br>
+  <strong>Listen:</strong> Mary will surface a gap — missed workshop calls, floor associates unreachable. That's your cue.<br>
+  <strong>Hand off:</strong> Flag the Engage pilot opportunity and confirm the AM will follow up.</p>
+</div>
+
+<div class="grid" style="margin-bottom:16px;">
+
+  <!-- CALL FLOW -->
+  <div class="card full">
+    <h2>Call Flow — 15 Minutes</h2>
+    <div class="grid-3">
+      <div>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <strong>Open &amp; Intro (1 min) <span class="tag">PS</span></strong>
+            <div class="line">"Mary, thanks for the time. I'm [name] from Professional Services — and I've got [AE/AM name] with me today. We're here to lock in the deployment details and go-live plan so we can keep momentum going. Should take about 15 minutes."</div>
+          </div>
+        </div>
+        <p style="font-size:11px;color:#888;margin-top:4px;">Mary likes a beat of small talk — don't skip it. Keep it brief.</p>
+      </div>
+      <div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <strong>Confirm Scope (5 min) <span class="tag">PS</span></strong>
+            <div class="line">"Let me walk through what we have on the ops ticket and make sure it matches your world."</div>
+          </div>
+        </div>
+        <p style="font-size:11px;color:#888;margin-top:4px;">See scope table below. Confirm each field and get verbal sign-off.</p>
+      </div>
+      <div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <strong>Confirm Go-Live Plan (4 min) <span class="tag">PS</span></strong>
+            <div class="line">"We'll build the schedule around your peak windows — nothing touches the floor during spring season or the holidays."</div>
+          </div>
+        </div>
+        <p style="font-size:11px;color:#888;margin-top:4px;">See phased rollout below. Walk through each phase and confirm dates.</p>
+      </div>
+      <div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <strong>Capture the Gap (3 min) <span class="tag">both</span></strong>
+            <div class="line">When Mary raises missed workshop calls: "That's an important gap — those missed calls are real revenue walking out the door."</div>
+          </div>
+        </div>
+        <p style="font-size:11px;color:#888;margin-top:4px;">Then hand immediately to AM to own the Engage follow-up.</p>
+      </div>
+      <div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <strong>AM Closes the Loop (1 min) <span class="tag am">AM</span></strong>
+            <div class="line">"Mary, I'll schedule a separate conversation to explore an Engage pilot for the workshop stores — we can look at the numbers and see if it makes sense to include in the go-live plan."</div>
+          </div>
+        </div>
+        <p style="font-size:11px;color:#888;margin-top:4px;">AM confirms follow-up commitment. PS wraps the call.</p>
+      </div>
+      <div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <strong>Wrap &amp; Next Steps (1 min) <span class="tag">PS</span></strong>
+            <div class="line">"Perfect. I'll send over the confirmed scope and go-live milestones for your review. [AM name] will be in touch on the Engage piece. You're in good hands, Mary."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCOPE TABLE -->
+  <div class="card">
+    <h2>Scope to Confirm <span class="tag">PS Leads</span></h2>
+    <table>
+      <thead><tr><th>Field</th><th>Confirm With Mary</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Total Sites</td>
+          <td><span class="confirm">24 sites</span> — 22 retail stores (CO, UT, AZ, NV) + HQ Denver + Distribution Center Denver</td>
+        </tr>
+        <tr>
+          <td>Licenses</td>
+          <td><span class="confirm">~500 estimated</span> — 50 HQ, 50 warehouse/logistics, 173 store staff (align on final headcount)</td>
+        </tr>
+        <tr>
+          <td>Reusing Phones?</td>
+          <td><span class="confirm">No</span> — full hardware replacement. Cisco UCM (HQ + 15 stores) and Avaya IP Office (7 Summit Gear stores)</td>
+        </tr>
+        <tr>
+          <td>International Sites?</td>
+          <td><span class="confirm">No</span> — all continental US</td>
+        </tr>
+        <tr>
+          <td>Onsite Activity</td>
+          <td>Confirm with Mary if any sites need on-site support vs. remote provisioning</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- GO-LIVE PLAN -->
+  <div class="card orange">
+    <h2>Phased Go-Live Plan <span class="tag" style="background:#F37944">PS Leads</span></h2>
+    <p style="font-size:12px;margin-bottom:12px;color:#5a5a58;"><strong>Key constraint:</strong> Avoid peak windows — Apr–Aug (spring/summer season) and Nov–Dec (holidays). Black Friday is a hard no.</p>
+    <div class="phase">
+      <div class="phase-label">Phase 1</div>
+      <div class="phase-detail"><strong>15 Cisco Priority Sites</strong> — <span>~80 users</span><br><span style="color:#F37944;">Within 3 months</span> (Cisco EOL driving urgency — these can't wait)</div>
+    </div>
+    <div class="phase">
+      <div class="phase-label">Phase 2</div>
+      <div class="phase-detail"><strong>HQ + Distribution Center</strong> — <span>~100–130 users</span><br>After Phase 1 stable</div>
+    </div>
+    <div class="phase">
+      <div class="phase-label">Phase 3</div>
+      <div class="phase-detail"><strong>Summit Gear / Avaya Sites</strong> — <span>~70 users</span><br>Final wave — legacy Avaya, lower urgency</div>
+    </div>
+    <div class="divider"></div>
+    <p style="font-size:12px;font-style:italic;color:#5a5a58;">"Mary, we want to move fast on Phase 1 — those Cisco sites are running out of runway. But we build the entire schedule around your peak windows so your IT team isn't managing a migration during your highest-traffic months."</p>
+  </div>
+
+</div>
+
+<!-- THE GAP -->
+<div class="card dark full" style="margin-bottom:16px;">
+  <h2>🎯 The Gap Mary Will Raise — Missed Workshop Calls</h2>
+  <div class="grid">
+    <div>
+      <p style="margin-bottom:10px;font-size:13px;"><strong>What she'll say (roughly):</strong></p>
+      <p style="font-style:italic;font-size:13px;color:#8EBEB1;">"One thing I keep hearing from Kevin — the workshop staff and floor associates are mobile, but the phones are at the front desk. Calls go unanswered during peak. We lose workshop appointments, bike service jobs. It keeps coming up."</p>
+      <div class="divider" style="background:#4a4a48;"></div>
+      <p style="font-size:12px;color:#EBEAE1;"><strong>Affected:</strong> 8 stores with bike workshops, plus Trip Planning Desk specialists — no mobile routing, no specialist escalation path today.</p>
+    </div>
+    <div>
+      <p style="margin-bottom:10px;font-size:13px;"><strong>Your response (PS):</strong></p>
+      <div class="line" style="margin-bottom:10px;">"Mary, that's an important flag — and it's exactly the kind of thing we want to surface now, before go-live, so we can design around it rather than patch it later. A $400 bike service lost because a call went to voicemail is real money."</div>
+      <p style="margin-bottom:8px;font-size:13px;"><strong>Then hand to AM:</strong></p>
+      <div class="line">"[AM name] — this feels like a natural extension of what we're already putting in. Do you want to take the Engage conversation with Kevin?"</div>
+      <p style="font-size:11px;color:#8EBEB1;margin-top:6px;">AM confirms they'll schedule a follow-up to explore an Engage pilot. You don't need to pitch Engage — just surface and hand off.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ENGAGE SEED -->
+<div class="grid" style="margin-bottom:16px;">
+  <div class="card green">
+    <h2>The Engage Pitch (for AM to land)</h2>
+    <div class="step">
+      <div class="step-num" style="background:#72AD6C;">→</div>
+      <div class="step-content">
+        <strong>The problem</strong>
+        <div class="line" style="background:#f0f7f0;">Workshop and floor staff are mobile. Fixed desk phones = missed calls = lost revenue.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:#72AD6C;">→</div>
+      <div class="step-content">
+        <strong>The solution</strong>
+        <div class="line" style="background:#f0f7f0;">8x8 Engage® gives associates a mobile-native experience — they're reachable on the floor, routed to the right specialist, without a desk phone.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:#72AD6C;">→</div>
+      <div class="step-content">
+        <strong>The CLC story seed</strong>
+        <div class="line" style="background:#f0f7f0;">"This is Stage 2 on the platform Parkway already owns. The intelligence compounds — Kevin gets missed-call visibility he's never had before."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card purple">
+    <h2>Mary Chen — Know Your Buyer</h2>
+    <table>
+      <tbody>
+        <tr><td>Title</td><td>VP of IT &amp; Infrastructure</td></tr>
+        <tr><td>Pain</td><td>3 vendors, 3 admin portals, 3 billing cycles. 5-person IT team stretched thin.</td></tr>
+        <tr><td>Win condition</td><td>One platform, one admin console — IT out of firefighting mode</td></tr>
+        <tr><td>Personality</td><td>Warm, direct, a little vendor-weary. Likes brief small talk before business.</td></tr>
+        <tr><td>Your job</td><td>Make her feel heard and confident. She's already bought in — this call is about execution trust.</td></tr>
+      </tbody>
+    </table>
+    <div class="divider"></div>
+    <p style="font-size:12px;font-style:italic;color:#5a5a58;">"I have three vendors, three contracts, and a five-person team. Every platform update is its own project. I want one system I can manage from one place."</p>
+  </div>
+</div>
+
+<!-- LANGUAGE CHEAT SHEET -->
+<div class="card full" style="margin-bottom:16px;">
+  <h2>Language That Lands — Use This, Not That</h2>
+  <div class="grid">
+    <table>
+      <thead><tr><th>✅ Say This</th><th>❌ Not This</th></tr></thead>
+      <tbody>
+        <tr><td>"One platform, one admin console — your team gets out of firefighting mode"</td><td>"Our UCaaS solution consolidates your endpoints"</td></tr>
+        <tr><td>"We build the schedule around your peak windows, not the other way around"</td><td>"The phased deployment mitigates operational risk"</td></tr>
+        <tr><td>"Those missed workshop calls are real revenue walking out the door"</td><td>"There are utilization gaps in your current telephony infrastructure"</td></tr>
+        <tr><td>"The intelligence compounds — each stage makes the whole platform smarter"</td><td>"Engage is an add-on product you can bolt on later"</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="footer">8x8 Internal — Simulation Only · Parkway Outdoors is a fictional account · July 7, 2026</div>
+
+</body>
+</html>
